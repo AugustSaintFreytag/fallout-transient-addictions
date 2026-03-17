@@ -1,0 +1,26 @@
+begin function { ref rBaseItem, ref rInvRef, short bIsActivationNotPrevented, short iActivatedHotkey }
+
+	; UDFs
+
+	ref SetLastActivationTimeUDF = CompileScript "SaintTransientAddictions\STAd_SetLastActivationTime.gek"
+
+	; Main
+
+	ref rAddictionEffect = GetAddictionEffect rBaseItem
+
+	if rAddictionEffect == 0
+		return
+	endif
+
+	string_var sEffectName = GetName rAddictionEffect
+	float fDaysPassed = GetGameDaysPassed 2277 08 17
+
+	Call SetLastActivationTimeUDF sEffectName fDaysPassed
+
+	PrintC "Player used addictive item with effect '%z', noting last use at %.2f days passed for addiction recovery." sEffectName GameDaysPassed
+
+	; Clean-Up
+
+	Sv_Destruct sEffectName
+
+end
