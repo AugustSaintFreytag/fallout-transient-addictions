@@ -1,0 +1,14 @@
+begin function {}
+
+	array_var aRecoveryMessageQueue = AuxiliaryVariableGetAsArray "*STAd_RecoveryMessageQueue"
+	short iNumRecoveryMessages = Ar_Size aRecoveryMessageQueue
+
+	if iNumRecoveryMessages == -1
+		; No initialized, return empty array.
+		SetFunctionValue Ar_Construct "array"
+		return
+	endif
+
+	SetFunctionValue aRecoveryMessageQueue
+
+end

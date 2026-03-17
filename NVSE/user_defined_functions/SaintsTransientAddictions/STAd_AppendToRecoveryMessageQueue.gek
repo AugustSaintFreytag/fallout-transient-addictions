@@ -1,0 +1,19 @@
+begin function { string_var sRecoveryMessage }
+
+	array_var aRecoveryMessageQueue = AuxiliaryVariableGetAsArray "*STAd_RecoveryMessageQueue"
+	short iNumRecoveryMessages = Ar_Size aRecoveryMessageQueue
+
+	if iNumRecoveryMessages == -1
+		let aRecoveryMessageQueue := Ar_Construct "array"
+	endif
+
+	Ar_Append aRecoveryMessageQueue, sRecoveryMessage
+
+	AuxiliaryVariableSetFromArray "*STAd_RecoveryMessageQueue" aRecoveryMessageQueue
+
+	; Clean-Up
+
+	let aRecoveryMessageQueue := Ar_Null
+	Sv_Destruct sRecoveryMessage
+
+end
