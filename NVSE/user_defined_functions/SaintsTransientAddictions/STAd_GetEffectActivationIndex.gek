@@ -1,0 +1,25 @@
+begin function { string_var sEffectName }
+
+	array_var aLastActivationMapKeys = AuxiliaryVariableGetAsArray "STAd_LastActivationMapKeys"
+
+	if eval Ar_Size aLastActivationMapKeys == -1
+		PrintC "Could not look up index of effect '%z' in activation keys, not initialized." sEffectName
+		SetFunctionValue Ar_BadNumericIndex
+		return
+	endif
+
+	short iIndex = Ar_Find sEffectName, aLastActivationMapKeys
+
+	if iIndex == Ar_BadNumericIndex
+		PrintC "Could not find index of effect '%z' in activation keys." sEffectName
+		SetFunctionValue Ar_BadNumericIndex
+		return
+	endif
+
+	SetFunctionValue iIndex
+
+	; Clean-Up
+
+	Sv_Destruct sEffectName
+	let aLastActivationMapKeys := Ar_Null
+end

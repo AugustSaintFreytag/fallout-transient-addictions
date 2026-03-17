@@ -1,0 +1,51 @@
+begin function { string_var sEffectName, float lastActivationTime }
+
+	array_var aLastActivationMapKeys = AuxiliaryVariableGetAsArray "STAd_LastActivationMapKeys"
+	array_var aLastActivationMapValues = AuxiliaryVariableGetAsArray "STAd_LastActivationMapValues"
+
+	; Check if arrays have been initialized.
+
+	short iKeyArraySize = Ar_Size aLastActivationMapKeys
+	short iValueArraySize = Ar_Size aLastActivationMapValues
+
+	if eval iKeyArraySize == -1
+		let aLastActivationMapKeys := Ar_Construct "array"
+	endif
+
+	if eval iValueArraySize == -1
+		let aLastActivationMapValues := Ar_Construct "array"
+	endif
+
+	if eval iKeyArraySize != iValueArraySize
+		PrintC "Critical integrity error in key/value map of last item activation time (size mismatch, %g vs. %g). Resetting storage arrays." iKeyArraySize iValueArraySize
+		let aLastActivationMapKeys := Ar_Construct "array"
+		let aLastActivationMapValues := Ar_Construct "array"
+	endif
+
+	short iIndex = Ar_Find sEffectName, aLastActivationMapKeys
+
+	if (iIndex == Ar_BadNumericIndex)
+		; Key does not exist, append to arrays.
+		PrintC "Could not find index of effect '%z' in activation keys, appending to write activation time." sEffectName
+
+		Ar_Append aLastActivationMapKeys sEffectName
+		Ar_Append aLastActivationMapValues lastActivationTime
+	else
+		; Key already exists, set at location.
+		PrintC "Updating activation time for effect '%z' at index %g." sEffectName iIndex
+		let aLastActivationMapValues[iIndex] := lastActivationTime
+	endif
+
+	; Write to aux vars.
+
+	AuxiliaryVariableSetFromArray "STAd_LastActivationMapKeys" aLastActivationMapKeys
+	AuxiliaryVariableSetFromArray "STAd_LastActivationMapValues" aLastActivationMapValues
+
+	; Clean-Up
+
+	Sv_Destruct sEffectName
+
+	let aLastActivationMapKeys := Ar_Null
+	let aLastActivationMapValues := Ar_Null
+
+end
