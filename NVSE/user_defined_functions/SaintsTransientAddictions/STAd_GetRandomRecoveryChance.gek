@@ -1,0 +1,22 @@
+begin function { float fDaysSinceLastActivation }
+
+    float fHealthChanceFactor = 0.0
+
+    ; Check if player is healthy enough to heal addictions.
+	float fPlayerHealthFraction = player.GetAV Health / player.GetBaseAV Health
+	
+    if fPlayerHealthFraction > 0.7
+        let fHealthChanceFactor := 1.0
+    endif
+
+    float fTimeChanceFactor = GetMaxOf 0 (fDaysSinceLastActivation / 3)
+
+	; Calculate chance from player endurance and luck (at 0.25 = 5% chance max).
+    float fBaseChance = (player.GetAV Endurance * 0.25 + player.GetAV Luck * 0.25)
+    float fFinalChance = GetMinOf (fBaseChance * fTimeChanceFactor * fHealthChanceFactor) 100.0
+
+    PrintC "Returning addiction recovery chance of %.2f (base %.2f, days since last act.: %.2f, health factor: %.2f, time factor: %.2f)." fFinalChance fBaseChance fDaysSinceLastActivation fHealthChanceFactor fTimeChanceFactor
+
+	SetFunctionValue fFinalChance
+	
+end
