@@ -1,8 +1,8 @@
-begin function { ref rBaseItem, ref rInvRef, short bIsActivationNotPrevented, short iActivatedHotkey }
+begin Function { ref rBaseItem, ref rInvRef, short bIsActivationNotPrevented, short iActivatedHotkey }
 
 	; UDFs
 
-	ref SetLastActivationTimeUDF = CompileScript "SaintTransientAddictions\STAd_SetLastActivationTime.gek"
+	ref SetLastActivationTimeUDF = CompileScript "SaintsTransientAddictions\STAd_SetLastActivationTime.gek"
 
 	; Main
 

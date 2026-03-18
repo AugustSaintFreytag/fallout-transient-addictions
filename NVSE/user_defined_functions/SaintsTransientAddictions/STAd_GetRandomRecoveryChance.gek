@@ -1,4 +1,4 @@
-begin function { float fDaysSinceLastActivation }
+begin Function { float fDaysSinceLastActivation }
 
     float fHealthChanceFactor = 0.0
 

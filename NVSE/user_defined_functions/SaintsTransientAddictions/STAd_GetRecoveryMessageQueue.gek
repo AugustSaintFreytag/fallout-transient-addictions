@@ -1,4 +1,4 @@
-begin function {}
+begin Function {}
 
 	array_var aRecoveryMessageQueue = AuxiliaryVariableGetAsArray "*STAd_RecoveryMessageQueue"
 	short iNumRecoveryMessages = Ar_Size aRecoveryMessageQueue

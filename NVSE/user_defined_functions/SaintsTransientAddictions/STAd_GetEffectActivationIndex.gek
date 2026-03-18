@@ -1,8 +1,9 @@
-begin function { string_var sEffectName }
+begin Function { string_var sEffectName }
 
 	array_var aLastActivationMapKeys = AuxiliaryVariableGetAsArray "STAd_LastActivationMapKeys"
+	short iNumKeys = Ar_Size aLastActivationMapKeys
 
-	if eval Ar_Size aLastActivationMapKeys == -1
+	if iNumKeys == -1
 		PrintC "Could not look up index of effect '%z' in activation keys, not initialized." sEffectName
 		SetFunctionValue Ar_BadNumericIndex
 		return

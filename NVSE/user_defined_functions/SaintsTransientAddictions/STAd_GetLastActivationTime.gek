@@ -1,6 +1,6 @@
-begin function { string_var sEffectName }
+begin Function { string_var sEffectName }
 
-	ref GetEffectActivationIndexUDF = CompileScript "SaintTransientAddictions\STAd_GetEffectActivationIndex.gek"
+	ref GetEffectActivationIndexUDF = CompileScript "SaintsTransientAddictions\STAd_GetEffectActivationIndex.gek"
 
 	array_var aLastActivationMapValues = AuxiliaryVariableGetAsArray "STAd_LastActivationMapValues"
 	short iIndex = Call GetEffectActivationIndexUDF sEffectName
