@@ -1,0 +1,8 @@
+begin Function {}
+
+	array_var aRecoveryMessageQueue = Ar_Construct "array"
+	AuxiliaryVariableSetFromArray "*STAd_RecoveryMessageQueue" aRecoveryMessageQueue
+
+	Print "Cleared recovery message queue."
+
+end
