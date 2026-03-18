@@ -1,0 +1,13 @@
+begin Function { string_var sItemName }
+
+	short iLastMessageIndex = AuxiliaryVariableGetFloat "*STAd_RecoveryMessageLastIndex"
+	short iNumRecoveryMessages = 0
+
+	Player.PlaySound UIHealthChemsWearOff
+	MessageBoxEx "With a lot of endurance, time, and a little bit of luck, you've managed to power through the shakes and jitters. You've recovered from %z addiction!" sItemName
+
+	; Clean-Up
+
+	Sv_Destruct sItemName
+
+end
