@@ -1,0 +1,19 @@
+; Aux Vars
+
+; Aux vars do not support string-keyed hash maps, so a pair of key/value arrays will be used.
+; "STAd_LastActivationMapKeys" ; Array of effect name strings
+; "STAd_LastActivationMapValues" ; Array of days passed since last activation
+; "*STAd_RecoveryMessageQueue"
+
+; UDFs
+
+ref OnItemActivationUDF = CompileScript "SaintsTransientAddictions\STAd_OnItemActivation.gek"
+ref TickAllPlayerEffectsUDF = CompileScript "SaintsTransientAddictions\STAd_TickAllPlayerEffects.gek"
+
+; Event Handlers
+
+SetEventHandlerAlt "ShowOff:OnPreActivateInventoryItem" OnItemActivationUDF
+
+SetGameMainLoopCallback TickAllPlayerEffectsUDF 1 600 1
+
+Print "Initialized Saint's Transient Addictions event handlers and tick loop."

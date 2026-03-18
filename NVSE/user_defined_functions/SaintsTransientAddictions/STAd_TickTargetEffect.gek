@@ -1,0 +1,42 @@
+begin Function { ref rEffect }
+
+	; UDFs
+
+	ref GetRandomRecoveryChanceUDF = CompileScript "SaintsTransientAddictions\STAd_GetRandomRecoveryChance.gek"
+	ref GetLastActivationTimeUDF = CompileScript "SaintsTransientAddictions\STAd_GetLastActivationTime.gek"
+	ref AppendToRecoveryMessageQueueUDF = CompileScript "SaintsTransientAddictions\STAd_AppendToRecoveryMessageQueue.gek"
+
+	; Main
+
+	string_var sEffectName = GetName rEffect
+
+	PrintC "Ticking active addiction effect '%z' for player." sEffectName
+
+	string_var sItemName = sEffectName
+	Sv_Replace " Withdrawal|", sItemName
+
+	float fDaysPassedAtLastActivation = Call GetLastActivationTimeUDF sEffectName
+
+	float fDaysPassed = GetGameDaysPassed 2277 08 17
+	float fDaysSinceLastActivation = fDaysPassed - fDaysPassedAtLastActivation
+
+	float fRecoveryChance = Call GetRandomRecoveryChanceUDF fDaysSinceLastActivation
+	float fRandom = 0
+
+	let fRandom := GetRandomPercent
+
+	; Roll the dice
+	if fRandom < fRecoveryChance
+		PrintC "Player recovered from addiction from '%z' (%z). Needed %.2f, rolled %.2f." sItemName sEffectName fRecoveryChance fRandom
+
+		Player.RemoveSpell rEffect
+		Call AppendToRecoveryMessageQueueUDF sItemName
+	else
+		PrintC "Player did not recover from addiction from %z (%z) after %.2f day(s) since last activation. Needed %.2f, rolled %.2f." sItemName sEffectName fDaysSinceLastActivation fRecoveryChance fRandom
+	endif
+
+	; Clean-Up
+
+	Sv_Destruct sEffectName, sItemName
+
+end

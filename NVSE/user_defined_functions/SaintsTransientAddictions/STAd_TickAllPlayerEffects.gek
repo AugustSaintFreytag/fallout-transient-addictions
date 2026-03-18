@@ -1,0 +1,63 @@
+begin Function {}
+
+	; UDFs
+
+	ref TickTargetEffectUDF = CompileScript "SaintsTransientAddictions\STAd_TickTargetEffect.gek"
+	ref GetRecoveryMessageQueueUDF = CompileScript "SaintsTransientAddictions\STAd_GetRecoveryMessageQueue.gek"
+	ref ClearRecoveryMessageQueueUDF = CompileScript "SaintsTransientAddictions\STAd_ClearRecoveryMessageQueue.gek"
+	ref ShowRecoveryMessageUDF = CompileScript "SaintsTransientAddictions\STAd_ShowRecoveryMessage.gek"
+
+	; Recovery
+
+	ref rEffect
+	short iNumEffectsInFormList
+	short iNumEffectsChecked
+
+	foreach rEffect <- TTWAddictionWithdrawalList
+		let iNumEffectsInFormList := iNumEffectsInFormList + 1
+
+		if Player.IsSpellTargetAlt rEffect
+			PrintC "Detected player with active addiction effect '%z'." (GetName rEffect)
+			Call TickTargetEffectUDF rEffect
+			let iNumEffectsChecked := iNumEffectsChecked + 1
+		endif
+	loop
+
+	if iNumEffectsChecked > 0
+		PrintC "Processed %g active addiction effects on player (%g in form list)." iNumEffectsChecked iNumEffectsInFormList
+	else
+		PrintC "No active addiction effects detected on player to process (%g effects in form list)." iNumEffectsInFormList
+	endif
+
+	; Messages
+
+	array_var aRecoveryMessageQueue = Call GetRecoveryMessageQueueUDF
+	short iNumRecoveryMessages = Ar_Size aRecoveryMessageQueue
+	short iDetectionState = GetPCDetectionState
+
+	array_var aEntry
+	string_var sItemName
+
+	if iNumRecoveryMessages != 0
+		PrintC "Player has %g addiction recovery messages in queue." iNumRecoveryMessages 
+
+		if iDetectionState == 0 || iDetectionState == 2
+			foreach aEntry <- aRecoveryMessageQueue
+				let sItemName := aEntry["value"]
+
+				PrintC "Showing addiction recovery message for '%z'." sItemName
+				Call ShowRecoveryMessageUDF sItemName
+			loop
+
+			Call ClearRecoveryMessageQueueUDF
+		endif
+	endif
+
+	; Clean-Up
+
+	let aRecoveryMessageQueue := Ar_Null
+	let aEntry := Ar_Null
+
+	Sv_Destruct sItemName
+
+end
