@@ -1,13 +1,38 @@
 begin Function { string_var sItemName }
 
+	; UDFs
+
+	ref GetRecoveryMessagesUDF = CompileScript "SaintsTransientAddictions\STAd_GetRecoveryMessages.gek"
+
+	; Config
+
+	array_var aMessages = Call GetRecoveryMessagesUDF
+	short iNumMessages = Ar_Size aMessages
+
+	; Selection
+
 	short iLastMessageIndex = AuxiliaryVariableGetFloat "*STAd_RecoveryMessageLastIndex"
-	short iNumRecoveryMessages = 0
+	short iRandomMessageIndex = Rand 0 (iNumMessages - 1)
+
+	if iRandomMessageIndex == iLastMessageIndex
+		let iRandomMessageIndex := (iRandomMessageIndex + 1) % iNumMessages
+	endif
+
+	AuxiliaryVariableSetFloat "*STAd_RecoveryMessageLastIndex" iRandomMessageIndex
+
+	; Presentation
+
+	string_var sMessage = aMessages[iRandomMessageIndex]
+
+	PrintC "Selected recovery message at index %g with contents '%z'." iRandomMessageIndex sMessage
 
 	Player.PlaySound UIHealthChemsWearOff
-	MessageBoxEx "With a lot of endurance, time, and a little bit of luck, you've managed to power through the shakes and jitters. You've recovered from %z addiction!" sItemName
+	MessageBoxEx ($sMessage) sItemName
 
 	; Clean-Up
 
-	Sv_Destruct sItemName
+	Sv_Destruct sItemName, sMessage
+
+	let aMessages := Ar_Null
 
 end
