@@ -1,0 +1,33 @@
+begin Function {}
+
+	array_var aMessages = AuxiliaryVariableGetAsArray "*STAd_RecoveryMessages"
+	short iNumMessages = Ar_Size aMessages
+
+	PrintC "Retrieving recovery messages, number of messages is %g." iNumMessages
+
+	if iNumMessages == -1
+		let aMessages := Ar_Construct "array"
+
+		; Load from INI
+		array_var aMessageMap = GetINISection "Messages" "SaintsTransientAddictions.ini"
+
+		foreach array_var aMessageMapEntry <- aMessageMap
+			string_var sMessage = aMessageMapEntry["value"]
+			let sMessage := sMessage[1:-2]
+
+			PrintC "Loading and appending message '%z' to array." sMessage
+			
+			Ar_Append aMessages, sMessage
+		loop
+
+		let iNumMessages := Ar_Size aMessages
+
+		AuxiliaryVariableSetFromArray "*STAd_RecoveryMessages" aMessages
+		PrintC "Loaded and cached %g recovery messages." iNumMessages
+	else
+		PrintC "Serving %g recovery messages from auxiliary cache." iNumMessages
+	endif
+
+	SetFunctionValue aMessages
+
+end
