@@ -3,17 +3,23 @@
 ; Aux vars do not support string-keyed hash maps, so a pair of key/value arrays will be used.
 ; "STAd_LastActivationMapKeys" ; Array of effect name strings
 ; "STAd_LastActivationMapValues" ; Array of days passed since last activation
-; "*STAd_RecoveryMessageQueue"
+; "*STAd_RecoveryMessageQueue" ; Array of item names to be shown in recovery messages
+; "*STAd_RecoveryMessages" ; Array of cached message texts read from INI
 
 ; UDFs
 
 ref OnItemActivationUDF = CompileScript "SaintsTransientAddictions\STAd_OnItemActivation.gek"
 ref TickAllPlayerEffectsUDF = CompileScript "SaintsTransientAddictions\STAd_TickAllPlayerEffects.gek"
 
+; Config
+
+short iTickIntervalSeconds = GetINIFloatOrDefault_Cached "General:iTickInterval" "SaintsTransientAddictions.ini" 15
+short iTickIntervalFrames = iTickIntervalSeconds * 60
+
 ; Event Handlers
 
 SetEventHandlerAlt "ShowOff:OnPreActivateInventoryItem" OnItemActivationUDF
 
-SetGameMainLoopCallback TickAllPlayerEffectsUDF 1 600 1
+SetGameMainLoopCallback TickAllPlayerEffectsUDF 1 iTickIntervalFrames 1
 
 Print "Initialized Saint's Transient Addictions event handlers and tick loop."

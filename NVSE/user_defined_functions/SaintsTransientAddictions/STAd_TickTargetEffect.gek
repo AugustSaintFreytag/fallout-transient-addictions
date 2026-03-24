@@ -9,10 +9,8 @@ begin Function { ref rEffect }
 	; Main
 
 	string_var sEffectName = GetName rEffect
-
-	PrintC "Ticking active addiction effect '%z' for player." sEffectName
-
 	string_var sItemName = sEffectName
+	
 	Sv_Replace " Withdrawal|", sItemName
 
 	float fDaysPassedAtLastActivation = Call GetLastActivationTimeUDF sEffectName
