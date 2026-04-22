@@ -7,6 +7,16 @@ begin Function {}
 	ref ClearRecoveryMessageQueueUDF = CompileScript "SaintsTransientAddictions\STAd_ClearRecoveryMessageQueue.gek"
 	ref ShowRecoveryMessageUDF = CompileScript "SaintsTransientAddictions\STAd_ShowRecoveryMessage.gek"
 
+	; State
+
+	short bDidRunSinceLastGameLoad = AuxiliaryVariableGetFloat "*STAd_DidTick"
+
+	if bDidRunSinceLastGameLoad == 0
+		Print "Skipping first time tick after load."
+		AuxiliaryVariableSetFloat "*STAd_DidTick" 1
+		return
+	endif
+
 	; Recovery
 
 	ref rEffect
