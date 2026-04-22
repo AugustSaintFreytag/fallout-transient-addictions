@@ -38,7 +38,7 @@ begin Function {}
 	array_var aEntry
 	string_var sItemName
 
-	if iNumRecoveryMessages != 0
+	if iNumRecoveryMessages > 0
 		PrintC "Player has %g addiction recovery messages in queue." iNumRecoveryMessages 
 
 		if iDetectionState == 0 || iDetectionState == 2
