@@ -1,13 +1,21 @@
 begin Function { string_var sEffectName }
 
+	; UDFs
+
 	ref GetEffectActivationIndexUDF = CompileScript "SaintsTransientAddictions\STAd_GetEffectActivationIndex.gek"
+	ref SetLastActivationTimeUDF = CompileScript "SaintsTransientAddictions\STAd_SetLastActivationTime.gek"
+
+	; Run
 
 	array_var aLastActivationMapValues = AuxiliaryVariableGetAsArray "STAd_LastActivationMapValues"
 	short iIndex = Call GetEffectActivationIndexUDF sEffectName
 
 	if eval iIndex == Ar_BadNumericIndex || (Ar_HasKey aLastActivationMapValues, iIndex == 0)
 		; Effect not yet stored in aux key/value map, bail.
-		PrintC "Index for last activation time was either invalid or not in values array (was %g), bailing." iIndex
+		PrintC "Index for last activation time was either invalid or not in values array (was %g), setting to now and returning 0 days since last use." iIndex
+
+		float fDaysPassed = GetGameDaysPassed 2277 08 17
+		Call SetLastActivationTimeUDF sEffectName fDaysPassed
 
 		SetFunctionValue 0
 		return
