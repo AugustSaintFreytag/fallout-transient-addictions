@@ -9,11 +9,11 @@ begin Function {}
 
 	; State
 
-	short bDidRunSinceLastGameLoad = AuxiliaryVariableGetFloat "*STAd_DidTick"
+	short bDidRunSinceLastGameLoad = Player.AuxiliaryVariableGetFloat "*STAd_DidTick"
 
 	if bDidRunSinceLastGameLoad == 0
 		Print "Skipping first time tick after load."
-		AuxiliaryVariableSetFloat "*STAd_DidTick" 1
+		Player.AuxiliaryVariableSetFloat "*STAd_DidTick" 1
 		return
 	endif
 

@@ -7,7 +7,7 @@ begin Function { string_var sEffectName }
 
 	; Run
 
-	array_var aLastActivationMapValues = AuxiliaryVariableGetAsArray "STAd_LastActivationMapValues"
+	array_var aLastActivationMapValues = Player.AuxiliaryVariableGetAsArray "STAd_LastActivationMapValues"
 	short iIndex = Call GetEffectActivationIndexUDF sEffectName
 
 	if eval iIndex == Ar_BadNumericIndex || (Ar_HasKey aLastActivationMapValues, iIndex == 0)

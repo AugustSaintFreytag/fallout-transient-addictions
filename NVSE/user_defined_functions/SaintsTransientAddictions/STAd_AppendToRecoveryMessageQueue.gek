@@ -1,6 +1,6 @@
 begin Function { string_var sRecoveryMessage }
 
-	array_var aRecoveryMessageQueue = AuxiliaryVariableGetAsArray "*STAd_RecoveryMessageQueue"
+	array_var aRecoveryMessageQueue = Player.AuxiliaryVariableGetAsArray "*STAd_RecoveryMessageQueue"
 	short iNumRecoveryMessages = Ar_Size aRecoveryMessageQueue
 
 	if iNumRecoveryMessages == -1
@@ -9,7 +9,7 @@ begin Function { string_var sRecoveryMessage }
 
 	Ar_Append aRecoveryMessageQueue, sRecoveryMessage
 
-	AuxiliaryVariableSetFromArray "*STAd_RecoveryMessageQueue" aRecoveryMessageQueue
+	Player.AuxiliaryVariableSetFromArray "*STAd_RecoveryMessageQueue" aRecoveryMessageQueue
 
 	; Clean-Up
 

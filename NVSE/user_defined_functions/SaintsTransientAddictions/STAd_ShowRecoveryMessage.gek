@@ -11,14 +11,14 @@ begin Function { string_var sItemName }
 
 	; Selection
 
-	short iLastMessageIndex = AuxiliaryVariableGetFloat "*STAd_RecoveryMessageLastIndex"
+	short iLastMessageIndex = Player.AuxiliaryVariableGetFloat "*STAd_RecoveryMessageLastIndex"
 	short iRandomMessageIndex = Rand 0 (iNumMessages - 1)
 
 	if iRandomMessageIndex == iLastMessageIndex
 		let iRandomMessageIndex := (iRandomMessageIndex + 1) % iNumMessages
 	endif
 
-	AuxiliaryVariableSetFloat "*STAd_RecoveryMessageLastIndex" iRandomMessageIndex
+	Player.AuxiliaryVariableSetFloat "*STAd_RecoveryMessageLastIndex" iRandomMessageIndex
 
 	; Presentation
 
