@@ -3,7 +3,7 @@ begin Function {}
 	array_var aMessages = Player.AuxiliaryVariableGetAsArray "*STAd_RecoveryMessages"
 	short iNumMessages = Ar_Size aMessages
 
-	PrintC "Retrieving recovery messages, number of messages is %g." iNumMessages
+	;PrintC "Retrieving recovery messages, number of messages is %g." iNumMessages
 
 	if iNumMessages == -1
 		let aMessages := Ar_Construct "array"
@@ -15,7 +15,7 @@ begin Function {}
 			string_var sMessage = aMessageMapEntry["value"]
 			let sMessage := sMessage[1:-2]
 
-			PrintC "Loading and appending message '%z' to array." sMessage
+			;PrintC "Loading and appending message '%z' to array." sMessage
 			
 			Ar_Append aMessages, sMessage
 		loop
@@ -25,7 +25,7 @@ begin Function {}
 		Player.AuxiliaryVariableSetFromArray "*STAd_RecoveryMessages" aMessages
 		PrintC "Loaded and cached %g recovery messages." iNumMessages
 	else
-		PrintC "Serving %g recovery messages from auxiliary cache." iNumMessages
+		PrintC "Serving %g recovery messages from cache." iNumMessages
 	endif
 
 	SetFunctionValue aMessages

@@ -4,7 +4,7 @@ begin Function {}
 	short iNumRecoveryMessages = Ar_Size aRecoveryMessageQueue
 
 	if iNumRecoveryMessages == -1
-		; No initialized, return empty array.
+		; Not initialized, return empty array.
 		SetFunctionValue Ar_Construct "array"
 		return
 	endif

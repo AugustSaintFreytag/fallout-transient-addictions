@@ -1,6 +1,6 @@
 begin Function {}
 
 	Player.AuxiliaryVariableErase "*STAd_RecoveryMessageQueue"
-	Print "Cleared recovery message queue."
+	;Print "Cleared recovery message queue."
 
 end
