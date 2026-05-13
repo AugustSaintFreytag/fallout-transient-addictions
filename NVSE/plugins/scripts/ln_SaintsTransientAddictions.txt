@@ -13,7 +13,7 @@ ref TickAllPlayerEffectsUDF = CompileScript "SaintsTransientAddictions\STAd_Tick
 
 ; Config
 
-short iTickIntervalSeconds = GetINIFloatOrDefault_Cached "General:iTickInterval" "SaintsTransientAddictions.ini" 15
+short iTickIntervalSeconds = GetINIFloat_Cached "General:iTickInterval" "SaintsTransientAddictions.ini" 15
 short iTickIntervalFrames = iTickIntervalSeconds * 60
 
 ; Event Handlers
