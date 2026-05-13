@@ -2,10 +2,10 @@ begin Function { float fDaysSinceLastActivation }
 
     ; Config
 
-    float fRecoveryMinHealth = GetINIFloatOrDefault_Cached "General:fRecoveryMinHealth" "SaintsTransientAddictions.ini" 0.7
-    short iRecoveryTimePivot = GetINIFloatOrDefault_Cached "General:iRecoveryTimePivot" "SaintsTransientAddictions.ini" 3
-    float fRecoveryEnduranceFactor = GetINIFloatOrDefault_Cached "General:fRecoveryEnduranceFactor" "SaintsTransientAddictions.ini" 0.25
-    float fRecoveryLuckFactor = GetINIFloatOrDefault_Cached "General:fRecoveryLuckFactor" "SaintsTransientAddictions.ini" 0.25
+    float fRecoveryMinHealth = GetINIFloat_Cached "General:fRecoveryMinHealth" "SaintsTransientAddictions.ini"
+    float fRecoveryTimePivot = GetINIFloat_Cached "General:fRecoveryTimePivot" "SaintsTransientAddictions.ini"
+    float fRecoveryEnduranceFactor = GetINIFloat_Cached "General:fRecoveryEnduranceFactor" "SaintsTransientAddictions.ini"
+    float fRecoveryLuckFactor = GetINIFloat_Cached "General:fRecoveryLuckFactor" "SaintsTransientAddictions.ini"
 
     ; Calculation
 
@@ -18,14 +18,19 @@ begin Function { float fDaysSinceLastActivation }
         let fHealthChanceFactor := 1.0
     endif
 
-    float fTimeChanceFactor = GetMaxOf 0 (fDaysSinceLastActivation / iRecoveryTimePivot)
+    float fTimeChanceFactor = 0.0
+
+    if fTimeChanceFactor <= 0
+        let fTimeChanceFactor := fDaysSinceLastActivation
+    else
+        let fTimeChanceFactor := GetMaxOf 0.0 (fDaysSinceLastActivation / fRecoveryTimePivot)
+    endif
 
 	; Calculate chance from player endurance and luck (at 0.25 = 5% chance max).
-    float fEnduranceBaseChance = Player.GetAV Endurance * fRecoveryEnduranceFactor
-    float fLuckBaseChance = Player.GetAV Luck * fRecoveryLuckFactor
+    float fEnduranceBaseChance = ((Player.GetAV Endurance) / 9) * fRecoveryEnduranceFactor
+    float fLuckBaseChance = ((Player.GetAV Luck) / 9) * fRecoveryLuckFactor
     float fBaseChance = fEnduranceBaseChance + fLuckBaseChance
-
-    float fFinalChance = GetMinOf (fBaseChance * fTimeChanceFactor * fHealthChanceFactor) 100.0
+    float fFinalChance = GetMinOf (fBaseChance * fTimeChanceFactor * fHealthChanceFactor) 1.0
 
     PrintC "Returning addiction recovery chance of %.2f (base %.2f, days since last act.: %.2f, health factor: %.2f, time factor: %.2f)." fFinalChance fBaseChance fDaysSinceLastActivation fHealthChanceFactor fTimeChanceFactor
 
