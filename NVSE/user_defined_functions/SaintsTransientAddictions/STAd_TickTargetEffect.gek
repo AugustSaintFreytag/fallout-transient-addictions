@@ -2,7 +2,7 @@ begin function { ref rEffect }
 
 	; UDFs
 
-	ref GetEffectRecoveryChanceUDF = CompileScript "SaintsTransientAddictions\STAd_GetRandomRecoveryChance.gek"
+	ref GetEffectRecoveryChanceUDF = CompileScript "SaintsTransientAddictions\STAd_GetEffectRecoveryChance.gek"
 	ref GetLastActivationTimeUDF = CompileScript "SaintsTransientAddictions\STAd_GetLastActivationTime.gek"
 	ref AppendToRecoveryMessageQueueUDF = CompileScript "SaintsTransientAddictions\STAd_AppendToRecoveryMessageQueue.gek"
 
