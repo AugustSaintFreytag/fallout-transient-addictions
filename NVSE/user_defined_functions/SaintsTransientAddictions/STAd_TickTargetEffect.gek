@@ -1,4 +1,4 @@
-begin Function { ref rEffect }
+begin function { ref rEffect }
 
 	; UDFs
 

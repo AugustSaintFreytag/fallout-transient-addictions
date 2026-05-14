@@ -1,4 +1,4 @@
-begin Function { string_var sRecoveryMessage }
+begin function { string_var sRecoveryMessage }
 
 	array_var aRecoveryMessageQueue = Player.AuxiliaryVariableGetAsArray "*STAd_RecoveryMessageQueue"
 	short iNumRecoveryMessages = Ar_Size aRecoveryMessageQueue

@@ -1,4 +1,4 @@
-begin Function { string_var sEffectName }
+begin function { string_var sEffectName }
 
 	; UDFs
 

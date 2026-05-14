@@ -1,4 +1,4 @@
-begin Function { string_var sEffectName, float lastActivationTime }
+begin function { string_var sEffectName, float lastActivationTime }
 
 	array_var aLastActivationMapKeys = Player.AuxiliaryVariableGetAsArray "STAd_LastActivationMapKeys"
 	array_var aLastActivationMapValues = Player.AuxiliaryVariableGetAsArray "STAd_LastActivationMapValues"
