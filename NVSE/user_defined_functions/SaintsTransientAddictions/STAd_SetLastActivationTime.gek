@@ -1,4 +1,4 @@
-begin Function { string_var sEffectName, float lastActivationTime }
+begin function { string_var sEffectName, float lastActivationTime }
 
 	array_var aLastActivationMapKeys = Player.AuxiliaryVariableGetAsArray "STAd_LastActivationMapKeys"
 	array_var aLastActivationMapValues = Player.AuxiliaryVariableGetAsArray "STAd_LastActivationMapValues"
@@ -26,13 +26,13 @@ begin Function { string_var sEffectName, float lastActivationTime }
 
 	if (iIndex == Ar_BadNumericIndex)
 		; Key does not exist, append to arrays.
-		PrintC "Could not find index of effect '%z' in activation keys, appending to write activation time." sEffectName
+		;PrintC "Could not find index of effect '%z' in activation keys, appending to write activation time." sEffectName
 
 		Ar_Append aLastActivationMapKeys sEffectName
 		Ar_Append aLastActivationMapValues lastActivationTime
 	else
 		; Key already exists, set at location.
-		PrintC "Updating activation time for effect '%z' at index %g." sEffectName iIndex
+		;PrintC "Updating activation time for effect '%z' at index %g." sEffectName iIndex
 		let aLastActivationMapValues[iIndex] := lastActivationTime
 	endif
 

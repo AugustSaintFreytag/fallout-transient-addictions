@@ -1,4 +1,4 @@
-begin Function { ref rBaseItem, ref rInvRef, short bIsActivationNotPrevented, short iActivatedHotkey }
+begin function { ref rBaseItem, ref rInvRef, short bIsActivationNotPrevented, short iActivatedHotkey }
 
 	; UDFs
 
@@ -17,7 +17,7 @@ begin Function { ref rBaseItem, ref rInvRef, short bIsActivationNotPrevented, sh
 
 	Call SetLastActivationTimeUDF sEffectName fDaysPassed
 
-	PrintC "Player used addictive item with effect '%z', noting last use at %.2f days passed for addiction recovery." sEffectName GameDaysPassed
+	;PrintC "Player used addictive item with effect '%z', noting last use at %.2f days passed for addiction recovery." sEffectName GameDaysPassed
 
 	; Clean-Up
 

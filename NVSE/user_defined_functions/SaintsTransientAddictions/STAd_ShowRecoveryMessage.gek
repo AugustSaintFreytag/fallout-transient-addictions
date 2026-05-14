@@ -1,4 +1,4 @@
-begin Function { string_var sItemName }
+begin function { string_var sItemName }
 
 	; UDFs
 

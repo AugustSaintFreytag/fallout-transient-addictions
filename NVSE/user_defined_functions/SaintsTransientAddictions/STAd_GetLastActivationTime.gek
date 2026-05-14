@@ -1,4 +1,4 @@
-begin Function { string_var sEffectName }
+begin function { string_var sEffectName }
 
 	; UDFs
 
@@ -23,7 +23,7 @@ begin Function { string_var sEffectName }
 
 	float fLastActivationTime = aLastActivationMapValues[iIndex]
 
-	PrintC "Retrieved last activation time for effect '%z' with %g." sEffectName fLastActivationTime
+	;PrintC "Retrieved last activation time for effect '%z' with %g." sEffectName fLastActivationTime
 
 	SetFunctionValue fLastActivationTime
 
