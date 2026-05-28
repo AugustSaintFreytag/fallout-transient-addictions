@@ -23,12 +23,12 @@ begin function { ref rEffect }
 	float fRandom = (Rand 0, 1)
 
 	if fRandom < fRecoveryChance
-		PrintC "Player recovered from addiction from '%z' (%z). Rolled %.2f/%.2f." sItemName sEffectName fRandom fRecoveryChance
+		PrintC "Player recovered from %z Addiction (%z). Rolled %.2f/%.2f." sItemName sEffectName fRandom fRecoveryChance
 
 		Player.RemoveSpell rEffect
 		Call AppendToRecoveryMessageQueueUDF sItemName
 	else
-		PrintC "Player did not recover from addiction from %z (%z) after %.2f day(s) since last activation. Rolled %.2f/%.2f." sItemName sEffectName fDaysSinceLastActivation fRandom fRecoveryChance
+		;PrintC "Player did not recover from %z Addiction (%z) after %.2f day(s) since last activation. Rolled %.2f/%.2f." sItemName sEffectName fDaysSinceLastActivation fRandom fRecoveryChance
 	endif
 
 	; Clean-Up
