@@ -5,7 +5,7 @@ begin function {}
 	ref TickTargetEffectUDF = CompileScript "SaintsTransientAddictions\STAd_TickTargetEffect.gek"
 	ref GetRecoveryMessageQueueUDF = CompileScript "SaintsTransientAddictions\STAd_GetRecoveryMessageQueue.gek"
 	ref ClearRecoveryMessageQueueUDF = CompileScript "SaintsTransientAddictions\STAd_ClearRecoveryMessageQueue.gek"
-	ref ShowRecoveryMessageUDF = CompileScript "SaintsTransientAddictions\STAd_ShowRecoveryMessage.gek"
+	ref NotifyRecoveryUDF = CompileScript "SaintsTransientAddictions\STAd_NotifyRecovery.gek"
 
 	; State
 
@@ -56,7 +56,7 @@ begin function {}
 				let sItemName := aEntry["value"]
 
 				;PrintC "Showing addiction recovery message for '%z'." sItemName
-				Call ShowRecoveryMessageUDF sItemName
+				Call NotifyRecoveryUDF sItemName
 			loop
 
 			Call ClearRecoveryMessageQueueUDF
