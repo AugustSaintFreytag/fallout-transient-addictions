@@ -1,0 +1,31 @@
+begin function { string_var sItemName }
+
+	; UDFs
+
+	ref ShowRecoveryMessageUDF = CompileScript "SaintsTransientAddictions\STAd_ShowRecoveryMessage.gek"
+	ref ShowRecoveryMessageBoxUDF = CompileScript "SaintsTransientAddictions\STAd_ShowRecoveryMessageBox.gek"
+	ref PlayRecoverySoundUDF = CompileScript "SaintsTransientAddictions\STAd_PlayRecoverySound.gek"
+
+	; Config
+
+	short iRecoveryMessageMode = GetINIFloat_Cached "General:iRecoveryMessageMode" "SaintsTransientAddictions.ini" 3
+
+	; Main
+
+	if iRecoveryMessageMode == 0
+		return
+	endif
+
+	if iRecoveryMessageMode > 1
+		Call PlayRecoverySoundUDF
+	endif
+
+	if iRecoveryMessageMode == 2
+		Call ShowRecoveryMessageUDF sItemName
+	endif
+
+	if iRecoveryMessageMode == 3
+		Call ShowRecoveryMessageBoxUDF sItemName
+	endif
+
+end
