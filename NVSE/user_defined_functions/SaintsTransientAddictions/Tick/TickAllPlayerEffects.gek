@@ -2,18 +2,18 @@ begin function {}
 
 	; UDFs
 
-	ref TickTargetEffectUDF = CompileScript "SaintsTransientAddictions\STAd_TickTargetEffect.gek"
-	ref GetRecoveryMessageQueueUDF = CompileScript "SaintsTransientAddictions\STAd_GetRecoveryMessageQueue.gek"
-	ref ClearRecoveryMessageQueueUDF = CompileScript "SaintsTransientAddictions\STAd_ClearRecoveryMessageQueue.gek"
-	ref NotifyRecoveryUDF = CompileScript "SaintsTransientAddictions\STAd_NotifyRecovery.gek"
+	ref TickTargetEffectUDF = CompileScript "SaintsTransientAddictions\Tick\TickTargetEffect.gek"
+	ref GetRecoveryMessageQueueUDF = CompileScript "SaintsTransientAddictions\Queue\GetRecoveryMessageQueue.gek"
+	ref ClearRecoveryMessageQueueUDF = CompileScript "SaintsTransientAddictions\Queue\ClearRecoveryMessageQueue.gek"
+	ref NotifyRecoveryUDF = CompileScript "SaintsTransientAddictions\Message\NotifyRecovery.gek"
 
 	; State
 
-	short bDidRunSinceLastGameLoad = Player.AuxiliaryVariableGetFloat "*STAd_DidTick"
+	short bDidRunSinceLastGameLoad = Player.AuxiliaryVariableGetFloat "*DidTick"
 
 	if bDidRunSinceLastGameLoad == 0
 		;Print "Skipping first time tick after load."
-		Player.AuxiliaryVariableSetFloat "*STAd_DidTick" 1
+		Player.AuxiliaryVariableSetFloat "*DidTick" 1
 		return
 	endif
 

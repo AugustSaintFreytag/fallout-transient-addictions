@@ -1,15 +1,15 @@
 ; Aux Vars
 
 ; Aux vars do not support string-keyed hash maps, so a pair of key/value arrays will be used.
-; "STAd_LastActivationMapKeys" ; Array of effect name strings
-; "STAd_LastActivationMapValues" ; Array of days passed since last activation
-; "*STAd_RecoveryMessageQueue" ; Array of item names to be shown in recovery messages
-; "*STAd_RecoveryMessages" ; Array of cached message texts read from INI
+; "LastActivationMapKeys" ; Array of effect name strings
+; "LastActivationMapValues" ; Array of days passed since last activation
+; "*RecoveryMessageQueue" ; Array of item names to be shown in recovery messages
+; "*RecoveryMessages" ; Array of cached message texts read from INI
 
 ; UDFs
 
-ref OnItemActivationUDF = CompileScript "SaintsTransientAddictions\STAd_OnItemActivation.gek"
-ref TickAllPlayerEffectsUDF = CompileScript "SaintsTransientAddictions\STAd_TickAllPlayerEffects.gek"
+ref OnItemActivationUDF = CompileScript "SaintsTransientAddictions\Items\OnItemActivation.gek"
+ref TickAllPlayerEffectsUDF = CompileScript "SaintsTransientAddictions\Tick\TickAllPlayerEffects.gek"
 
 ; Config
 

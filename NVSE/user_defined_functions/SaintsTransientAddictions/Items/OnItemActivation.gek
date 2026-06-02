@@ -2,7 +2,7 @@ begin function { ref rBaseItem, ref rInvRef, short bIsActivationNotPrevented, sh
 
 	; UDFs
 
-	ref SetLastActivationTimeUDF = CompileScript "SaintsTransientAddictions\STAd_SetLastActivationTime.gek"
+	ref SetLastActivationTimeUDF = CompileScript "SaintsTransientAddictions\Items\SetLastActivationTime.gek"
 
 	; Main
 

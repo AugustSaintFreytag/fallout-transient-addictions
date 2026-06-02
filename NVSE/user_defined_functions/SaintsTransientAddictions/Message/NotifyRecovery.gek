@@ -2,9 +2,9 @@ begin function { string_var sItemName }
 
 	; UDFs
 
-	ref ShowRecoveryMessageUDF = CompileScript "SaintsTransientAddictions\STAd_ShowRecoveryMessage.gek"
-	ref ShowRecoveryMessageBoxUDF = CompileScript "SaintsTransientAddictions\STAd_ShowRecoveryMessageBox.gek"
-	ref PlayRecoverySoundUDF = CompileScript "SaintsTransientAddictions\STAd_PlayRecoverySound.gek"
+	ref ShowRecoveryMessageUDF = CompileScript "SaintsTransientAddictions\Message\ShowRecoveryMessage.gek"
+	ref ShowRecoveryMessageBoxUDF = CompileScript "SaintsTransientAddictions\Message\ShowRecoveryMessageBox.gek"
+	ref PlayRecoverySoundUDF = CompileScript "SaintsTransientAddictions\Message\PlayRecoverySound.gek"
 
 	; Config
 
