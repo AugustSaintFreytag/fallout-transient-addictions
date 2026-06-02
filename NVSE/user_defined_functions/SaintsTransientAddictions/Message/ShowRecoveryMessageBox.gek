@@ -2,7 +2,7 @@ begin function { string_var sItemName }
 
 	; UDFs
 
-	ref GetRecoveryMessagesUDF = CompileScript "SaintsTransientAddictions\STAd_GetRecoveryMessages.gek"
+	ref GetRecoveryMessagesUDF = CompileScript "SaintsTransientAddictions\Message\GetRecoveryMessages.gek"
 
 	; Config
 
@@ -11,14 +11,14 @@ begin function { string_var sItemName }
 
 	; Selection
 
-	short iLastMessageIndex = Player.AuxiliaryVariableGetFloat "*STAd_RecoveryMessageLastIndex"
+	short iLastMessageIndex = Player.AuxiliaryVariableGetFloat "*RecoveryMessageLastIndex"
 	short iRandomMessageIndex = Rand 0 (iNumMessages - 1)
 
 	if iRandomMessageIndex == iLastMessageIndex
 		let iRandomMessageIndex := (iRandomMessageIndex + 1) % iNumMessages
 	endif
 
-	Player.AuxiliaryVariableSetFloat "*STAd_RecoveryMessageLastIndex" iRandomMessageIndex
+	Player.AuxiliaryVariableSetFloat "*RecoveryMessageLastIndex" iRandomMessageIndex
 
 	; Presentation
 

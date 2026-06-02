@@ -1,7 +1,7 @@
 begin function { string_var sEffectName, float lastActivationTime }
 
-	array_var aLastActivationMapKeys = Player.AuxiliaryVariableGetAsArray "STAd_LastActivationMapKeys"
-	array_var aLastActivationMapValues = Player.AuxiliaryVariableGetAsArray "STAd_LastActivationMapValues"
+	array_var aLastActivationMapKeys = Player.AuxiliaryVariableGetAsArray "LastActivationMapKeys"
+	array_var aLastActivationMapValues = Player.AuxiliaryVariableGetAsArray "LastActivationMapValues"
 
 	; Check if arrays have been initialized.
 
@@ -38,8 +38,8 @@ begin function { string_var sEffectName, float lastActivationTime }
 
 	; Write to aux vars.
 
-	Player.AuxiliaryVariableSetFromArray "STAd_LastActivationMapKeys" aLastActivationMapKeys
-	Player.AuxiliaryVariableSetFromArray "STAd_LastActivationMapValues" aLastActivationMapValues
+	Player.AuxiliaryVariableSetFromArray "LastActivationMapKeys" aLastActivationMapKeys
+	Player.AuxiliaryVariableSetFromArray "LastActivationMapValues" aLastActivationMapValues
 
 	; Clean-Up
 

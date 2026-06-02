@@ -2,12 +2,12 @@ begin function { string_var sEffectName }
 
 	; UDFs
 
-	ref GetEffectActivationIndexUDF = CompileScript "SaintsTransientAddictions\STAd_GetEffectActivationIndex.gek"
-	ref SetLastActivationTimeUDF = CompileScript "SaintsTransientAddictions\STAd_SetLastActivationTime.gek"
+	ref GetEffectActivationIndexUDF = CompileScript "SaintsTransientAddictions\Items\GetEffectActivationIndex.gek"
+	ref SetLastActivationTimeUDF = CompileScript "SaintsTransientAddictions\Items\SetLastActivationTime.gek"
 
 	; Run
 
-	array_var aLastActivationMapValues = Player.AuxiliaryVariableGetAsArray "STAd_LastActivationMapValues"
+	array_var aLastActivationMapValues = Player.AuxiliaryVariableGetAsArray "LastActivationMapValues"
 	short iIndex = Call GetEffectActivationIndexUDF sEffectName
 
 	if eval iIndex == Ar_BadNumericIndex || (Ar_HasKey aLastActivationMapValues, iIndex == 0)

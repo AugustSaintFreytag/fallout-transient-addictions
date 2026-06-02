@@ -1,6 +1,6 @@
 begin function {}
 
-	array_var aMessages = Player.AuxiliaryVariableGetAsArray "*STAd_RecoveryMessages"
+	array_var aMessages = Player.AuxiliaryVariableGetAsArray "*RecoveryMessages"
 	short iNumMessages = Ar_Size aMessages
 
 	;PrintC "Retrieving recovery messages, number of messages is %g." iNumMessages
@@ -22,7 +22,7 @@ begin function {}
 
 		let iNumMessages := Ar_Size aMessages
 
-		Player.AuxiliaryVariableSetFromArray "*STAd_RecoveryMessages" aMessages
+		Player.AuxiliaryVariableSetFromArray "*RecoveryMessages" aMessages
 		PrintC "Loaded and cached %g recovery messages." iNumMessages
 	else
 		PrintC "Serving %g recovery messages from cache." iNumMessages
