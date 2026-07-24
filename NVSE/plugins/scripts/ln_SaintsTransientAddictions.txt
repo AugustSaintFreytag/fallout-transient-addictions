@@ -18,7 +18,13 @@ short iTickIntervalFrames = iTickIntervalSeconds * 60
 
 ; Event Handlers
 
-SetEventHandlerAlt "ShowOff:OnPreActivateInventoryItem" OnItemActivationUDF
+SetEventHandlerAlt "ShowOff:OnPreActivateInventoryItem" (begin function { ref rBaseItem, ref rInvRef, short bIsActivationNotPrevented, short iActivatedHotkey } 
+	Call OnItemActivationUDF rBaseItem
+end)
+
+SetEventHandlerAlt "QuickSelect:OnPreActivateInventoryItem" (begin function { ref rBaseItem, array_var aEventState } 
+	Call OnItemActivationUDF rBaseItem
+end)
 
 SetGameMainLoopCallback TickAllPlayerEffectsUDF 1 iTickIntervalFrames 1
 

@@ -1,4 +1,4 @@
-begin function { ref rBaseItem, ref rInvRef, short bIsActivationNotPrevented, short iActivatedHotkey }
+begin function { ref rBaseItem }
 
 	; UDFs
 
