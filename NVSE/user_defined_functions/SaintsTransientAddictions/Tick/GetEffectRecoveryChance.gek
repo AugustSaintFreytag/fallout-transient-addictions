@@ -32,6 +32,11 @@ begin function { float fDaysSinceLastActivation }
     float fBaseChance = fEnduranceBaseChance + fLuckBaseChance
     float fFinalChance = GetMinOf (fBaseChance * fTimeChanceFactor * fHealthChanceFactor) 1.0
 
+    if fFinalChance < 1.0
+        ; Shear off lowest end to prevent unwanted early recoveries.
+        let fFinalChance := 0.0
+    endif
+
     ; PrintC "Returning addiction recovery chance of %.2f (base %.2f, days since last act.: %.2f, health factor: %.2f, time factor: %.2f)." fFinalChance fBaseChance fDaysSinceLastActivation fHealthChanceFactor fTimeChanceFactor
 
 	SetFunctionValue fFinalChance
