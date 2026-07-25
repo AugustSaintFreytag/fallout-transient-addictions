@@ -1,0 +1,26 @@
+begin function { ref rItem }
+
+	; UDFs
+
+	ref GetModifiedAddictionChanceUDF = CompileScript "SaintsTransientAddictions\Items\GetModifiedAddictionChance.gek"
+	ref RestoreBaseAddictionChanceUDF = CompileScript "SaintsTransientAddictions\Items\RestoreBaseAddictionChance.gek"
+	ref DecayAllDependenceUDF = CompileScript "SaintsTransientAddictions\Dependence\DecayAllDependence.gek"
+
+	; Main
+
+	Call DecayAllDependenceUDF
+
+	float fModifiedAddictionChance = Call GetModifiedAddictionChanceUDF rItem
+
+	SetAddictionChance rItem fModifiedAddictionChance
+	CallAfterFrames 1 RestoreBaseAddictionChanceUDF 1 rItem
+
+	; Debug
+
+	short bDebug = GetINIFloat_Cached "Debug:bDebug" "SaintsTransientAddictions.ini"
+
+	if bDebug
+		PrintC "[STA] Activating item '%n' (%z) with modified addiction chance %.4f." rItem (GetFormIDString rItem) fModifiedAddictionChance
+	endif
+
+end

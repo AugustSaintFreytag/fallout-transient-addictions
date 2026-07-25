@@ -1,38 +1,46 @@
-begin function { ref rEffect }
+begin function { ref rAddictionType }
 
 	; UDFs
 
 	ref GetEffectRecoveryChanceUDF = CompileScript "SaintsTransientAddictions\Tick\GetEffectRecoveryChance.gek"
-	ref GetLastActivationTimeUDF = CompileScript "SaintsTransientAddictions\Items\GetLastActivationTime.gek"
 	ref AppendToRecoveryMessageQueueUDF = CompileScript "SaintsTransientAddictions\Queue\AppendToRecoveryMessageQueue.gek"
+
+	; Config
+
+	short bDebug = GetINIFloat_Cached "Debug:bDebug" "SaintsTransientAddictions.ini"
+
+	; State
+
+	string_var sAddictionTypeId = GetFormIDString rAddictionType
+	array_var aDependenceByAddictionType = Player.AuxStringMapArrayGetAsArray "STAd_DependenceByAddictionType"
+	float fDependence = aDependenceByAddictionType[sAddictionTypeId]
 
 	; Main
 
-	string_var sEffectName = GetName rEffect
+	string_var sEffectName = GetName rAddictionType
 	string_var sItemName = sEffectName
-	
+
 	Sv_Replace " Withdrawal|", sItemName
 
-	float fDaysPassedAtLastActivation = (Call GetLastActivationTimeUDF sEffectName)
-	float fDaysPassed = GetGameDaysPassed 2277 08 17
-	float fDaysSinceLastActivation = fDaysPassed - fDaysPassedAtLastActivation
-	float fRecoveryChance = (Call GetEffectRecoveryChanceUDF fDaysSinceLastActivation)
-
-	; Roll
-
+	float fRecoveryChance = (Call GetEffectRecoveryChanceUDF fDependence)
 	float fRandom = (Rand 0, 1)
 
 	if fRandom < fRecoveryChance
-		PrintC "Player recovered from %z Addiction (%z). Rolled %.2f/%.2f." sItemName sEffectName fRandom fRecoveryChance
+		if bDebug
+			PrintC "Player recovered from %z Addiction (%z) at %.4f dependence. Rolled %.2f/%.2f." sItemName sEffectName fDependence fRandom fRecoveryChance
+		endif
 
-		Player.RemoveSpell rEffect
+		Player.RemoveSpell rAddictionType
 		Call AppendToRecoveryMessageQueueUDF sItemName
-	else
-		;PrintC "Player did not recover from %z Addiction (%z) after %.2f day(s) since last activation. Rolled %.2f/%.2f." sItemName sEffectName fDaysSinceLastActivation fRandom fRecoveryChance
+
+	elseif bDebug
+		PrintC "Player did not recover from %z Addiction (%z) at %.4f dependence. Rolled %.2f/%.2f." sItemName sEffectName fDependence fRandom fRecoveryChance
 	endif
 
 	; Clean-Up
 
-	Sv_Destruct sEffectName, sItemName
+	Sv_Destruct sAddictionTypeId, sEffectName, sItemName
+
+	let aDependenceByAddictionType := Ar_Null
 
 end

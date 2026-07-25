@@ -1,29 +1,41 @@
 ; Aux Vars
 
-; Aux vars do not support string-keyed hash maps, so a pair of key/value arrays will be used.
-; "LastActivationMapKeys" ; Array of effect name strings
-; "LastActivationMapValues" ; Array of days passed since last activation
-; "*RecoveryMessageQueue" ; Array of item names to be shown in recovery messages
-; "*RecoveryMessages" ; Array of cached message texts read from INI
+; "*STAd_BaseAddictionChanceByItem" ; Temporary string map of item FormID to base addiction chance
+; "STAd_DependenceByAddictionType" ; Persistent string map of addiction-type FormID to dependence
+; "STAd_DependenceDataVersion" ; Persistent dependence storage schema version
+; "*STAd_DependenceLastDecayGameDays" ; Temporary game time of the last dependence decay
+; "*STAd_RecoveryMessageQueue" ; Array of item names to be shown in recovery messages
+; "*STAd_RecoveryMessages" ; Array of cached message texts read from INI
+; "*STAd_RecoveryMessageLastIndex" ; Last randomly selected recovery message
+; "*STAd_DidTick" ; Whether the first post-load tick has been skipped
 
 ; UDFs
 
-ref OnItemActivationUDF = CompileScript "SaintsTransientAddictions\Items\OnItemActivation.gek"
+ref OnBeforeItemActivationUDF = CompileScript "SaintsTransientAddictions\Items\OnBeforeItemActivation.gek"
+ref SetUpDependenceStateUDF = CompileScript "SaintsTransientAddictions\Dependence\SetUpDependenceState.gek"
 ref TickAllPlayerEffectsUDF = CompileScript "SaintsTransientAddictions\Tick\TickAllPlayerEffects.gek"
+
+; Initialize dependence storage after the save has loaded.
+
+Call SetUpDependenceStateUDF
 
 ; Config
 
-short iTickIntervalSeconds = GetINIFloat_Cached "General:iTickInterval" "SaintsTransientAddictions.ini" 15
+short iTickIntervalSeconds = GetINIFloat_Cached "General:iTickInterval" "SaintsTransientAddictions.ini"
 short iTickIntervalFrames = iTickIntervalSeconds * 60
 
 ; Event Handlers
 
 SetEventHandlerAlt "ShowOff:OnPreActivateInventoryItem" (begin function { ref rBaseItem, ref rInvRef, short bIsActivationNotPrevented, short iActivatedHotkey } 
-	Call OnItemActivationUDF rBaseItem
-end)
+	if bIsActivationNotPrevented
+		Call OnBeforeItemActivationUDF rBaseItem
+	endif
+end) 3::1
 
-SetEventHandlerAlt "QuickSelect:OnPreActivateInventoryItem" (begin function { ref rBaseItem, array_var aEventState } 
-	Call OnItemActivationUDF rBaseItem
+SetEventHandlerAlt "QuickSelect:OnPreActivateInventoryItem" (begin function { ref rBaseItem, array_var aEventState }
+	if eval aEventState["bIsActivationNotPrevented"]
+		Call OnBeforeItemActivationUDF rBaseItem
+	endif
 end)
 
 SetGameMainLoopCallback TickAllPlayerEffectsUDF 1 iTickIntervalFrames 1

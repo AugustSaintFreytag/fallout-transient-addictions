@@ -1,26 +1,47 @@
-begin function { ref rBaseItem }
+begin function { ref rItem }
 
 	; UDFs
 
-	ref SetLastActivationTimeUDF = CompileScript "SaintsTransientAddictions\Items\SetLastActivationTime.gek"
+	ref GetDependenceForItemUDF = CompileScript "SaintsTransientAddictions\Dependence\GetDependenceForItem.gek"
+	ref SetDependenceForItemUDF = CompileScript "SaintsTransientAddictions\Dependence\SetDependenceForItem.gek"
 
 	; Main
 
-	ref rAddictionEffect = GetAddictionEffect rBaseItem
-
-	if rAddictionEffect == 0
+	if GetSelfAlt != Player
 		return
 	endif
 
-	string_var sEffectName = GetName rAddictionEffect
-	float fDaysPassed = GetGameDaysPassed 2277 08 17
+	array_var aBaseAddictionChanceByItem = Player.AuxStringMapArrayGetAsArray "*STAd_BaseAddictionChanceByItem"
+	string_var sItemId = GetFormIDString rItem
 
-	Call SetLastActivationTimeUDF sEffectName fDaysPassed
+	if eval !(Ar_HasKey aBaseAddictionChanceByItem, sItemId)
+		Sv_Destruct sItemId
+		let aBaseAddictionChanceByItem := Ar_Null
+		return
+	endif
 
-	;PrintC "Player used addictive item with effect '%z', noting last use at %.2f days passed for addiction recovery." sEffectName GameDaysPassed
+	float fDependencePerUse = GetINIFloat_Cached "Addiction:fDependencePerUse" "SaintsTransientAddictions.ini"
+	float fDependence = (Call GetDependenceForItemUDF rItem) + fDependencePerUse
+
+	Call SetDependenceForItemUDF rItem fDependence
+
+	; Restore immediately after engine has processed item use.
+
+	float fBaseAddictionChance = aBaseAddictionChanceByItem[sItemId]
+	SetAddictionChance rItem fBaseAddictionChance
+
+	; Debug
+
+	short bDebug = GetINIFloat_Cached "Debug:bDebug" "SaintsTransientAddictions.ini"
+
+	if bDebug
+		PrintC "[STA] Player activated item '%n' (%z), dependence has increased to: %.4f." rItem sItemId fDependence
+	endif
 
 	; Clean-Up
 
-	Sv_Destruct sEffectName
+	Sv_Destruct sItemId
+
+	let aBaseAddictionChanceByItem := Ar_Null
 
 end

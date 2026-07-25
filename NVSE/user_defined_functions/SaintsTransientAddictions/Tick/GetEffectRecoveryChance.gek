@@ -1,44 +1,27 @@
-begin function { float fDaysSinceLastActivation }
+begin function { float fDependence }
 
-    ; Config
+	; Config
 
-    float fRecoveryMinHealth = GetINIFloat_Cached "General:fRecoveryMinHealth" "SaintsTransientAddictions.ini"
-    float fRecoveryTimePivot = GetINIFloat_Cached "General:fRecoveryTimePivot" "SaintsTransientAddictions.ini"
-    float fRecoveryEnduranceFactor = GetINIFloat_Cached "General:fRecoveryEnduranceFactor" "SaintsTransientAddictions.ini"
-    float fRecoveryLuckFactor = GetINIFloat_Cached "General:fRecoveryLuckFactor" "SaintsTransientAddictions.ini"
+	float fRecoveryMinHealth = GetINIFloat_Cached "Recovery:fRecoveryMinHealth" "SaintsTransientAddictions.ini"
+	float fRecoveryDependencePivot = GetINIFloat_Cached "Recovery:fRecoveryDependencePivot" "SaintsTransientAddictions.ini"
+	float fRecoveryEnduranceFactor = GetINIFloat_Cached "Recovery:fRecoveryEnduranceFactor" "SaintsTransientAddictions.ini"
+	float fRecoveryLuckFactor = GetINIFloat_Cached "Recovery:fRecoveryLuckFactor" "SaintsTransientAddictions.ini"
 
-    ; Calculation
+	; Main
 
-    float fHealthChanceFactor = 0.0
-
-    ; Check if player is healthy enough to heal addictions.
+	float fHealthChanceFactor = 0.0
 	float fPlayerHealthFraction = Player.GetAV Health / Player.GetBaseAV Health
-	
-    if fPlayerHealthFraction > fRecoveryMinHealth
-        let fHealthChanceFactor := 1.0
-    endif
 
-    float fTimeChanceFactor = 0.0
+	if fPlayerHealthFraction > fRecoveryMinHealth
+		let fHealthChanceFactor := 1.0
+	endif
 
-    if fTimeChanceFactor <= 0
-        let fTimeChanceFactor := fDaysSinceLastActivation
-    else
-        let fTimeChanceFactor := GetMaxOf 0.0 (fDaysSinceLastActivation / fRecoveryTimePivot)
-    endif
-
-	; Calculate chance from player endurance and luck (at 0.25 = 5% chance max).
-    float fEnduranceBaseChance = ((Player.GetAV Endurance) / 9) * fRecoveryEnduranceFactor
-    float fLuckBaseChance = ((Player.GetAV Luck) / 9) * fRecoveryLuckFactor
-    float fBaseChance = fEnduranceBaseChance + fLuckBaseChance
-    float fFinalChance = GetMinOf (fBaseChance * fTimeChanceFactor * fHealthChanceFactor) 1.0
-
-    if fFinalChance < 1.0
-        ; Shear off lowest end to prevent unwanted early recoveries.
-        let fFinalChance := 0.0
-    endif
-
-    ; PrintC "Returning addiction recovery chance of %.2f (base %.2f, days since last act.: %.2f, health factor: %.2f, time factor: %.2f)." fFinalChance fBaseChance fDaysSinceLastActivation fHealthChanceFactor fTimeChanceFactor
+	float fDependenceChanceFactor = (GetMaxOf 0.0 (1 - (fDependence / fRecoveryDependencePivot)))
+	float fEnduranceBaseChance = ((Player.GetAV Endurance) / 9) * fRecoveryEnduranceFactor
+	float fLuckBaseChance = ((Player.GetAV Luck) / 9) * fRecoveryLuckFactor
+	float fBaseChance = fEnduranceBaseChance + fLuckBaseChance
+	float fFinalChance = (GetMinOf (fBaseChance * fDependenceChanceFactor * fHealthChanceFactor) 1.0)
 
 	SetFunctionValue fFinalChance
-	
+
 end
