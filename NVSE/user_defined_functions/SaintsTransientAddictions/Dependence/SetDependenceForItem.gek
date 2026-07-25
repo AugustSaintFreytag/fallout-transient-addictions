@@ -1,0 +1,21 @@
+begin function { ref rItem, float fDependence }
+
+	; State
+
+	ref rAddictionType = GetAddictionEffect rItem
+	string_var sAddictionTypeId = GetFormIDString rAddictionType
+	array_var aDependenceByAddictionType = Player.AuxStringMapArrayGetAsArray "STAd_DependenceByAddictionType"
+
+	; Main
+
+	let aDependenceByAddictionType[sAddictionTypeId] := fDependence
+
+	Player.AuxStringMapArraySetFromArray "STAd_DependenceByAddictionType" aDependenceByAddictionType
+
+	; Clean-Up
+
+	Sv_Destruct sAddictionTypeId
+
+	let aDependenceByAddictionType := Ar_Null
+
+end

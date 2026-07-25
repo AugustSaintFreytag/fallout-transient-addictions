@@ -1,0 +1,38 @@
+begin function {}
+
+	; Version Check
+
+	short iExpectedDependenceDataVersion = 1
+	short iDependenceDataVersion = Player.AuxiliaryVariableGetFloat "STAd_DependenceDataVersion"
+
+	if iDependenceDataVersion != iExpectedDependenceDataVersion
+		Player.AuxStringMapArrayDestroy "STAd_DependenceByAddictionType"
+
+		; Clear previous mod version aux vars.
+
+		Player.AuxiliaryVariableErase "STAd_UsageValueKeys"
+		Player.AuxiliaryVariableErase "STAd_UsageValues"
+		Player.AuxiliaryVariableErase "STAd_UsageLastDecayGameDays"
+		Player.AuxiliaryVariableErase "STAd_UsageDataVersion"
+		Player.AuxiliaryVariableErase "STAd_LastActivationMapKeys"
+		Player.AuxiliaryVariableErase "STAd_LastActivationMapValues"
+
+		Player.AuxiliaryVariableSetFloat "STAd_DependenceDataVersion" iExpectedDependenceDataVersion
+	endif
+
+	; Set-Up
+
+	array_var aDependenceByAddictionType = Player.AuxStringMapArrayGetAsArray "STAd_DependenceByAddictionType"
+
+	if eval (Ar_Size aDependenceByAddictionType) == (-1)
+		let aDependenceByAddictionType := Ar_Construct "stringmap"
+		Player.AuxStringMapArraySetFromArray "STAd_DependenceByAddictionType" aDependenceByAddictionType
+	endif
+
+	Player.AuxiliaryVariableErase "*STAd_DependenceLastDecayGameDays"
+
+	; Clean-Up
+
+	let aDependenceByAddictionType := Ar_Null
+
+end
