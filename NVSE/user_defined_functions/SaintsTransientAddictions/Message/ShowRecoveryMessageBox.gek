@@ -6,25 +6,25 @@ begin function { string_var sItemName }
 
 	; Config
 
-	array_var aMessages = Call GetRecoveryMessagesUDF
+	array_var aMessages = (Call GetRecoveryMessagesUDF)
 	short iNumMessages = Ar_Size aMessages
 
 	; Selection
 
-	short iLastMessageIndex = Player.AuxiliaryVariableGetFloat "*RecoveryMessageLastIndex"
+	short iLastMessageIndex = Player.AuxiliaryVariableGetFloat "*STAd_RecoveryMessageLastIndex"
 	short iRandomMessageIndex = Rand 0 (iNumMessages - 1)
 
 	if iRandomMessageIndex == iLastMessageIndex
 		let iRandomMessageIndex := (iRandomMessageIndex + 1) % iNumMessages
 	endif
 
-	Player.AuxiliaryVariableSetFloat "*RecoveryMessageLastIndex" iRandomMessageIndex
+	Player.AuxiliaryVariableSetFloat "*STAd_RecoveryMessageLastIndex" iRandomMessageIndex
 
 	; Presentation
 
 	string_var sMessage = aMessages[iRandomMessageIndex]
 
-	; PrintC "Selected recovery message at index %g with contents '%z'." iRandomMessageIndex sMessage
+	;PrintC "[STA] Selected recovery message at index %g with contents '%z'." iRandomMessageIndex sMessage
 
 	MessageBoxEx ($sMessage) sItemName
 

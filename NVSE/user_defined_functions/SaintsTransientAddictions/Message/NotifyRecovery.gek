@@ -8,7 +8,7 @@ begin function { string_var sItemName }
 
 	; Config
 
-	short iRecoveryMessageMode = GetINIFloat_Cached "General:iRecoveryMessageMode" "SaintsTransientAddictions.ini" 3
+	short iRecoveryMessageMode = GetINIFloat_Cached "Recovery:iRecoveryMessageMode" "SaintsTransientAddictions.ini"
 
 	; Main
 
@@ -16,9 +16,7 @@ begin function { string_var sItemName }
 		return
 	endif
 
-	if iRecoveryMessageMode > 1
-		Call PlayRecoverySoundUDF
-	endif
+	Call PlayRecoverySoundUDF
 
 	if iRecoveryMessageMode == 2
 		Call ShowRecoveryMessageUDF sItemName

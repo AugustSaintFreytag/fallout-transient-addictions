@@ -1,33 +1,41 @@
 begin function {}
 
-	array_var aMessages = Player.AuxiliaryVariableGetAsArray "*RecoveryMessages"
+	array_var aMessages = Player.AuxiliaryVariableGetAsArray "*STAd_RecoveryMessages"
 	short iNumMessages = Ar_Size aMessages
 
-	;PrintC "Retrieving recovery messages, number of messages is %g." iNumMessages
+	;PrintC "[STA] Retrieving recovery messages, number of messages is %g." iNumMessages
 
 	if iNumMessages == -1
 		let aMessages := Ar_Construct "array"
 
 		; Load from INI
-		array_var aMessageMap = GetINISection "Messages" "SaintsTransientAddictions.ini"
+		array_var aMessageMap = GetINISection "Messages" "SaintsTransientAddictionsMessages.ini"
 
 		foreach array_var aMessageMapEntry <- aMessageMap
 			string_var sMessage = aMessageMapEntry["value"]
 			let sMessage := sMessage[1:-2]
 
-			;PrintC "Loading and appending message '%z' to array." sMessage
-			
+			;PrintC "[STA] Loading and appending message '%z' to array." sMessage
 			Ar_Append aMessages, sMessage
+
+			Sv_Destruct sMessage
 		loop
 
 		let iNumMessages := Ar_Size aMessages
 
-		Player.AuxiliaryVariableSetFromArray "*RecoveryMessages" aMessages
-		PrintC "Loaded and cached %g recovery messages." iNumMessages
+		Player.AuxiliaryVariableSetFromArray "*STAd_RecoveryMessages" aMessages
+		;PrintC "[STA] Loaded and cached %g recovery messages." iNumMessages
+
+		let aMessageMap := Ar_Null
+		let aMessageMapEntry := Ar_Null
 	else
-		PrintC "Serving %g recovery messages from cache." iNumMessages
+		;PrintC "[STA] Serving %g recovery messages from cache." iNumMessages
 	endif
 
 	SetFunctionValue aMessages
+
+	; Clean-Up
+
+	let aMessages := Ar_Null
 
 end
