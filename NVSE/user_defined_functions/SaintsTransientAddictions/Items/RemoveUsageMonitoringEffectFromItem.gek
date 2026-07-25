@@ -1,0 +1,26 @@
+begin function { ref rBaseItem }
+
+	short iEffectIndex = (GetNumEffects rBaseItem) - 1
+	short iRemoved = 0
+
+	while iEffectIndex >= 0
+		ref rEffect = GetNthEffectBase rBaseItem iEffectIndex
+
+		if eval rEffect == UMON
+			short iResult = RemoveNthEffect rBaseItem iEffectIndex
+
+			if iResult < 0
+				PrintC "[STA] Could not remove UMON effect from addictive base item '%n'." rBaseItem
+				SetFunctionValue -1
+				return
+			endif
+
+			let iRemoved := iRemoved + 1
+		endif
+
+		let iEffectIndex := iEffectIndex - 1
+	loop
+
+	SetFunctionValue iRemoved
+
+end
