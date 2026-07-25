@@ -1,0 +1,59 @@
+begin function {}
+
+	; Config
+
+	float fDependenceHalfLifeHours = GetINIFloat_Cached "Addiction:fDependenceHalfLifeHours" "SaintsTransientAddictions.ini"
+	short bDebug = GetINIFloat_Cached "Debug:bDebug" "SaintsTransientAddictions.ini"
+
+	; State
+
+	float fCurrentGameDays = GetGameDaysPassed 2277 08 17
+	float fLastDecayGameDays = Player.AuxiliaryVariableGetFloat "*STAd_DependenceLastDecayGameDays"
+
+	if eval (fLastDecayGameDays <= 0) || (fCurrentGameDays <= fLastDecayGameDays)
+		Player.AuxiliaryVariableSetFloat "*STAd_DependenceLastDecayGameDays" fCurrentGameDays
+		SetFunctionValue 1.0
+		return
+	endif
+
+	float fElapsedGameHours = (fCurrentGameDays - fLastDecayGameDays) * 24
+	float fDecayFactor = (Pow 0.5 (fElapsedGameHours / fDependenceHalfLifeHours))
+
+	array_var aDependenceByAddictionType = Player.AuxStringMapArrayGetAsArray "STAd_DependenceByAddictionType"
+	array_var aDecayedDependenceByAddictionType = Ar_Construct "stringmap"
+
+	; Main
+
+	foreach array_var aEntry <- aDependenceByAddictionType
+		string_var sAddictionTypeId = aEntry["key"]
+		float fDependence = aEntry["value"]
+
+		if fDependence == 0
+			continue
+		endif
+
+		float fModifiedDependence = fDependence * fDecayFactor
+
+		if fModifiedDependence <= 0.0001
+			let fModifiedDependence := 0.0
+		endif
+
+		if eval bDebug
+			PrintC "[STA] Decayed dependence for key '%z' from %.6f -> %.6f after %.2f hour(s)." sAddictionTypeId fDependence fModifiedDependence fElapsedGameHours
+		endif
+
+		let aDecayedDependenceByAddictionType[sAddictionTypeId] := fModifiedDependence
+		Sv_Destruct sAddictionTypeId
+	loop
+
+	Player.AuxStringMapArraySetFromArray "STAd_DependenceByAddictionType" aDecayedDependenceByAddictionType
+	Player.AuxiliaryVariableSetFloat "*STAd_DependenceLastDecayGameDays" fCurrentGameDays
+
+	SetFunctionValue fDecayFactor
+
+	; Clean-Up
+
+	let aDependenceByAddictionType := Ar_Null
+	let aDecayedDependenceByAddictionType := Ar_Null
+
+end
