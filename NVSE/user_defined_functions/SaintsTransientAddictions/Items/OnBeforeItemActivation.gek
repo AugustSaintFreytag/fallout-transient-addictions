@@ -6,9 +6,17 @@ begin function { ref rItem }
 	ref RestoreBaseAddictionChanceUDF = CompileScript "SaintsTransientAddictions\Items\RestoreBaseAddictionChance.gek"
 	ref DecayAllDependenceUDF = CompileScript "SaintsTransientAddictions\Dependence\DecayAllDependence.gek"
 
+	; Config
+
+	short bEnableDependenceBasedAddictionChance = GetINIFloat_Cached "Addiction:bEnableDependenceBasedAddictionChance" "SaintsTransientAddictions.ini"
+
 	; Main
 
 	Call DecayAllDependenceUDF
+
+	if !bEnableDependenceBasedAddictionChance
+		return
+	endif
 
 	float fModifiedAddictionChance = Call GetModifiedAddictionChanceUDF rItem
 

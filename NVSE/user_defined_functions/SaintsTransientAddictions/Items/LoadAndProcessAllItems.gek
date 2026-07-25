@@ -5,6 +5,10 @@ begin function {}
 	ref RemoveUsageMonitoringEffectFromItemUDF = CompileScript "SaintsTransientAddictions\Items\RemoveUsageMonitoringEffectFromItem.gek"
 	ref OnItemActivationUDF = CompileScript "SaintsTransientAddictions\Items\OnItemActivation.gek"
 
+	; Config
+
+	short bRemoveAllItemUMONEffects = GetINIFloat_Cached "Addiction:bRemoveAllItemUMONEffects" "SaintsTransientAddictions.ini"
+
 	; State
 
 	array_var aBaseAddictionChanceByItem = Ar_Construct "stringmap"
@@ -25,9 +29,13 @@ begin function {}
 			continue
 		endif
 
-		Call RemoveUsageMonitoringEffectFromItemUDF rItem
+		if bRemoveAllItemUMONEffects
+			short iRemoved = Call RemoveUsageMonitoringEffectFromItemUDF rItem
 
-		let iNumRemoved += 1
+			if iRemoved > 0
+				let iNumRemoved += iRemoved
+			endif
+		endif
 
 		string_var sItemID = GetFormIDString rItem
 		let aBaseAddictionChanceByItem[sItemID] := fBaseAddictionChance

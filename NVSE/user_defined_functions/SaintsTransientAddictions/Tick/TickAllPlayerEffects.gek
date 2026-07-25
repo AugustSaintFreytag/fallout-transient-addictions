@@ -22,13 +22,18 @@ begin function {}
 		return
 	endif
 
+	short bEnableRecoverySystem = GetINIFloat_Cached "Recovery:bEnableRecoverySystem" "SaintsTransientAddictions.ini"
+
+	if bEnableRecoverySystem == 0
+		return
+	endif
+
 	; Recovery
 
-	ref rEffect
 	short iNumEffectsInFormList = 0
 	short iNumEffectsChecked = 0
 
-	foreach rEffect <- TTWAddictionWithdrawalList
+	foreach ref rEffect <- TTWAddictionWithdrawalList
 		let iNumEffectsInFormList := iNumEffectsInFormList + 1
 
 		if Player.IsSpellTargetAlt rEffect
@@ -38,30 +43,28 @@ begin function {}
 		endif
 	loop
 
-	if iNumEffectsChecked > 0
-		;PrintC "[STA] Processed %g active addiction effects on player (%g in form list)." iNumEffectsChecked iNumEffectsInFormList
-	else
-		;PrintC "[STA] No active addiction effects detected on player to process (%g effects in form list)." iNumEffectsInFormList
-	endif
+	; if iNumEffectsChecked > 0
+	; 	PrintC "[STA] Processed %g active addiction effects on player (%g in form list)." iNumEffectsChecked iNumEffectsInFormList
+	; else
+	; 	PrintC "[STA] No active addiction effects detected on player to process (%g effects in form list)." iNumEffectsInFormList
+	; endif
 
 	; Messages
 
-	array_var aRecoveryMessageQueue = (Call GetRecoveryMessageQueueUDF)
+	array_var aRecoveryMessageQueue = Call GetRecoveryMessageQueueUDF
 	short iNumRecoveryMessages = Ar_Size aRecoveryMessageQueue
 	short iDetectionState = GetPCDetectionState
-
-	array_var aEntry
-	string_var sItemName = ""
 
 	if iNumRecoveryMessages > 0
 		;PrintC "[STA] Player has %g addiction recovery messages in queue." iNumRecoveryMessages 
 
 		if eval (iDetectionState == 0) || (iDetectionState == 2)
-			foreach aEntry <- aRecoveryMessageQueue
-				let sItemName := aEntry["value"]
+			foreach array_var aEntry <- aRecoveryMessageQueue
+				string_var sItemName := aEntry["value"]
 
 				;PrintC "[STA] Showing addiction recovery message for '%z'." sItemName
 				Call NotifyRecoveryUDF sItemName
+				Sv_Destruct sItemName
 			loop
 
 			Call ClearRecoveryMessageQueueUDF

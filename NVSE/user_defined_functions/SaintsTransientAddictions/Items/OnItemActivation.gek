@@ -5,6 +5,10 @@ begin function { ref rItem }
 	ref GetDependenceForItemUDF = CompileScript "SaintsTransientAddictions\Dependence\GetDependenceForItem.gek"
 	ref SetDependenceForItemUDF = CompileScript "SaintsTransientAddictions\Dependence\SetDependenceForItem.gek"
 
+	; Config
+
+	short bEnableDependenceBasedAddictionChance = GetINIFloat_Cached "Addiction:bEnableDependenceBasedAddictionChance" "SaintsTransientAddictions.ini"
+
 	; Main
 
 	if GetSelfAlt != Player
@@ -25,10 +29,12 @@ begin function { ref rItem }
 
 	Call SetDependenceForItemUDF rItem fDependence
 
-	; Restore immediately after engine has processed item use.
+	; Restore immediately after engine has processed item use if the chance was modified.
 
-	float fBaseAddictionChance = aBaseAddictionChanceByItem[sItemId]
-	SetAddictionChance rItem fBaseAddictionChance
+	if bEnableDependenceBasedAddictionChance
+		float fBaseAddictionChance = aBaseAddictionChanceByItem[sItemId]
+		SetAddictionChance rItem fBaseAddictionChance
+	endif
 
 	; Debug
 
