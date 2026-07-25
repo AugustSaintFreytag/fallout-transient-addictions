@@ -1,0 +1,18 @@
+begin function { ref rItem }
+
+	; UDFs
+
+	ref GetBaseAddictionChanceUDF = CompileScript "SaintsTransientAddictions\Items\GetBaseAddictionChance.gek"
+
+	; Main
+
+	float fBaseAddictionChance = Call GetBaseAddictionChanceUDF rItem
+
+	if fBaseAddictionChance == (-1.0)
+		PrintC "[STA] Could not restore base addiction chance for item '%n', missing base chance entry." rItem
+		return
+	endif
+
+	SetAddictionChance rItem fBaseAddictionChance
+
+end

@@ -1,0 +1,20 @@
+begin function { ref rItem }
+
+	array_var aBaseAddictionChanceByItem = Player.AuxStringMapArrayGetAsArray "*STAd_BaseAddictionChanceByItem"
+	string_var sItemId = GetFormIDString rItem
+
+	; Initialize chance at -1, return zero chance as fallback.
+	float fBaseAddictionChance = -1.0
+
+	if eval (Ar_HasKey aBaseAddictionChanceByItem, sItemId)
+		let fBaseAddictionChance := aBaseAddictionChanceByItem[sItemId]
+	endif
+
+	SetFunctionValue fBaseAddictionChance
+
+	; Clean-Up
+
+	Sv_Destruct sItemId
+	let aBaseAddictionChanceByItem := Ar_Null
+
+end

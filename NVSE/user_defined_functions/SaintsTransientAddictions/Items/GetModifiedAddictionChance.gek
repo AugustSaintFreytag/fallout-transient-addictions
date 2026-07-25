@@ -1,0 +1,17 @@
+begin function { ref rItem }
+
+	; UDFs
+
+	ref GetDependenceForItemUDF = CompileScript "SaintsTransientAddictions\Dependence\GetDependenceForItem.gek"
+	ref GetBaseAddictionChanceUDF = CompileScript "SaintsTransientAddictions\Items\GetBaseAddictionChance.gek"
+	ref CalculateAddictionChanceUDF = CompileScript "SaintsTransientAddictions\Items\CalculateAddictionChance.gek"
+
+	; Main
+
+	float fDependence = Call GetDependenceForItemUDF rItem
+	float fBaseAddictionChance = Call GetBaseAddictionChanceUDF rItem
+	float fModifiedAddictionChance = Call CalculateAddictionChanceUDF fBaseAddictionChance fDependence
+
+	SetFunctionValue fModifiedAddictionChance
+
+end

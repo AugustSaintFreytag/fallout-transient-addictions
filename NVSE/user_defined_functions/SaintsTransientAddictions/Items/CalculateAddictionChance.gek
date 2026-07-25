@@ -1,0 +1,18 @@
+begin function { float fBaseAddictionChance, float fDependence }
+
+	; Config
+
+	float fChanceBaseFactor = GetINIFloat_Cached "Addiction:fChanceBaseFactor" "SaintsTransientAddictions.ini"
+	float fDependenceChanceContributionFactor = GetINIFloat_Cached "Addiction:fDependenceChanceContributionFactor" "SaintsTransientAddictions.ini"
+	float fChanceMax = GetINIFloat_Cached "Addiction:fChanceMax" "SaintsTransientAddictions.ini"
+
+	; Main
+
+	float fModifiedAddictionChance = fBaseAddictionChance * (fChanceBaseFactor + (fDependence * fDependenceChanceContributionFactor))
+	float fChanceLimit = (GetMaxOf fBaseAddictionChance fChanceMax)
+
+	let fModifiedAddictionChance := (GetMinOf fModifiedAddictionChance fChanceLimit)
+
+	SetFunctionValue fModifiedAddictionChance
+
+end
