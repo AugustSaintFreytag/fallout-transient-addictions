@@ -1,0 +1,53 @@
+begin function {}
+
+	; UDFs
+
+	ref RemoveUsageMonitoringEffectFromItemUDF = CompileScript "SaintsTransientAddictions\Items\RemoveUsageMonitoringEffectFromItem.gek"
+	ref OnItemActivationUDF = CompileScript "SaintsTransientAddictions\Items\OnItemActivation.gek"
+
+	; State
+
+	array_var aBaseAddictionChanceByItem = Ar_Construct "stringmap"
+	array_var aLoadedIngestibles = GetLoadedTypeArray 47
+
+	short iNumItems = Ar_Size aLoadedIngestibles
+
+	short iNumTracked = 0
+	short iNumRemoved = 0
+
+	; Main
+
+	foreach array_var aEntry <- aLoadedIngestibles
+		ref rItem = *aEntry
+		float fBaseAddictionChance = GetAddictionChance rItem
+
+		if fBaseAddictionChance <= 0
+			continue
+		endif
+
+		Call RemoveUsageMonitoringEffectFromItemUDF rItem
+
+		let iNumRemoved += 1
+
+		string_var sItemID = GetFormIDString rItem
+		let aBaseAddictionChanceByItem[sItemID] := fBaseAddictionChance
+
+		SetOnUseAidItemEventHandler OnItemActivationUDF 1 rItem
+
+		let iNumTracked += 1
+
+		Sv_Destruct sItemID
+	loop
+
+	Player.AuxStringMapArraySetFromArray "*STAd_BaseAddictionChanceByItem" aBaseAddictionChanceByItem
+
+	; PrintC "[STA] Scanned %g ingestibles, tracking %g, removed %g UMON entries." iNumItems iNumTracked iNumRemoved
+
+	SetFunctionValue iNumTracked
+
+	; Clean-Up
+
+	let aBaseAddictionChanceByItem := Ar_Null
+	let aLoadedIngestibles := Ar_Null
+
+end

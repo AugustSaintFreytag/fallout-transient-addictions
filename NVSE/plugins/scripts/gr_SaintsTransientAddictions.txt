@@ -1,0 +1,10 @@
+; Runs once when the game application starts.
+; Capture original addiction chances and disable engine-side UMON before gameplay.
+
+; UDFs
+
+ref LoadAllItemPropertiesUDF = CompileScript "SaintsTransientAddictions\Items\LoadAllItemProperties.gek"
+
+; Main
+
+Call LoadAllItemPropertiesUDF
