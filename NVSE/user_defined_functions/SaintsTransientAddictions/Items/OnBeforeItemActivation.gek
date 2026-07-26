@@ -14,7 +14,7 @@ begin function { ref rItem }
 
 	Call DecayAllDependenceUDF
 
-	if !bEnableDependenceBasedAddictionChance
+	if eval !bEnableDependenceBasedAddictionChance
 		return
 	endif
 
