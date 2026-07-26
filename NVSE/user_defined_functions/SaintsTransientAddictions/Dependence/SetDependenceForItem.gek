@@ -3,12 +3,16 @@ begin function { ref rItem, float fDependence }
 	; State
 
 	ref rAddictionType = GetAddictionEffect rItem
-	string_var sAddictionTypeId = GetFormIDString rAddictionType
+	string_var sAddictionTypeId = RefToString rAddictionType
 	array_var aDependenceByAddictionType = Player.AuxStringMapArrayGetAsArray "STAd_DependenceByAddictionType"
+
+	if eval (Ar_Size aDependenceByAddictionType) == (-1)
+		let aDependenceByAddictionType := Ar_Construct "stringmap"
+	endif
 
 	; Main
 
-	let aDependenceByAddictionType[sAddictionTypeId] := fDependence
+	let aDependenceByAddictionType[$sAddictionTypeId] := fDependence
 
 	Player.AuxStringMapArraySetFromArray "STAd_DependenceByAddictionType" aDependenceByAddictionType
 

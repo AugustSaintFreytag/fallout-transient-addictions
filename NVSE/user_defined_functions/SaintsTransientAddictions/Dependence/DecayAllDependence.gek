@@ -20,6 +20,11 @@ begin function {}
 	float fDecayFactor = (Pow 0.5 (fElapsedGameHours / fDependenceHalfLifeHours))
 
 	array_var aDependenceByAddictionType = Player.AuxStringMapArrayGetAsArray "STAd_DependenceByAddictionType"
+
+	if eval (Ar_Size aDependenceByAddictionType) == (-1)
+		let aDependenceByAddictionType := Ar_Construct "stringmap"
+	endif
+
 	array_var aDecayedDependenceByAddictionType = Ar_Construct "stringmap"
 
 	; Main

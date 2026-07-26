@@ -1,10 +1,21 @@
 begin function { ref rItem }
 
+	; Dependence Map
+
 	array_var aDependenceByAddictionType = Player.AuxStringMapArrayGetAsArray "STAd_DependenceByAddictionType"
 
+	; Addiction
+
 	ref rAddictionType = GetAddictionEffect rItem
-	string_var sAddictionTypeId = GetFormIDString rAddictionType
-	float fDependence = aDependenceByAddictionType[sAddictionTypeId]
+	string_var sAddictionTypeId = RefToString rAddictionType
+
+	float fDependence = 0
+
+	if eval (Ar_HasKey aDependenceByAddictionType, sAddictionTypeId)
+		let fDependence := aDependenceByAddictionType[$sAddictionTypeId]
+	endif
+
+	; Return
 
 	SetFunctionValue fDependence
 
