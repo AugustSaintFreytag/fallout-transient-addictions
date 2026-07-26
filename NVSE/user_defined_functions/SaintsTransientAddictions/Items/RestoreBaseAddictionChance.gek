@@ -6,6 +6,10 @@ begin function { ref rItem }
 
 	; Main
 
+	if eval !(GetAddictionEffect rItem)
+		return
+	endif
+
 	float fBaseAddictionChance = Call GetBaseAddictionChanceUDF rItem
 
 	if fBaseAddictionChance == (-1.0)
