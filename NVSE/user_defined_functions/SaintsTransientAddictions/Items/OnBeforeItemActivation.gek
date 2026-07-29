@@ -18,6 +18,10 @@ begin function { ref rItem }
 		return
 	endif
 
+	if eval !(GetAddictionEffect rItem)
+		return
+	endif
+
 	float fModifiedAddictionChance = Call GetModifiedAddictionChanceUDF rItem
 
 	SetAddictionChance rItem fModifiedAddictionChance
