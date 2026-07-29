@@ -23,6 +23,12 @@ begin function {}
 
 	foreach array_var aEntry <- aLoadedIngestibles
 		ref rItem = *aEntry
+		ref rAddictionEffect = GetAddictionEffect rItem
+
+		if eval !(rAddictionEffect)
+			continue
+		endif
+
 		float fBaseAddictionChance = GetAddictionChance rItem
 
 		if fBaseAddictionChance <= 0
